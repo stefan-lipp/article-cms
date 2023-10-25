@@ -8,3 +8,6 @@ az sql server firewall-rule create --name clientip --resource-group article-cms 
 
 # Create a SQL Database
 az sql db create --name article-cms-sql-db --resource-group article-cms --server article-cms-sql-server
+
+# Create and deploy the app service web app
+az webapp up --name article-cms-web-app --resource-group article-cms --sku F1
