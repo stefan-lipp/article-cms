@@ -2,12 +2,16 @@
 az group create --name article-cms --location germanywestcentral
 
 # Create a SQL Server with firewall rules
-az sql server create --name article-cms-sql-server --resource-group article-cms --admin-user articleadmin --admin-password B4CdR2C16G1py37
+az sql server create --name article-cms-sql-server --resource-group article-cms --location germanywestcentral --admin-user articleadmin --admin-password B4CdR2C16G1py37
 az sql server firewall-rule create --name azureaccess --resource-group article-cms --server article-cms-sql-server --start-ip-address 0.0.0.0 --end-ip-address 0.0.0.0
 az sql server firewall-rule create --name clientip --resource-group article-cms --server article-cms-sql-server --start-ip-address 62.216.202.15 --end-ip-address 62.216.202.15
 
 # Create a SQL Database
 az sql db create --name article-cms-sql-db --resource-group article-cms --server article-cms-sql-server
 
+# Create a storage account and container
+az storage account create --name storageaccountarticlecms --resource-group article-cms --location germanywestcentral --access-tier Cool --allow-blob-public-access true --public-network-access Enabled
+az storage container create --name images --account-name storageaccountarticlecms --auth-mode login --public-access container
+
 # Create and deploy the app service web app
-az webapp up --name article-cms-web-app --resource-group article-cms --sku F1
+az webapp up --name article-cms-web-app --resource-group article-cms --location germanywestcentral --plan article-cms-plan --sku F1
